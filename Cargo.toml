@@ -3,6 +3,7 @@ name = "htpasswd-verify"
 version = "0.3.0"
 authors = ["aQaTL <mmsoltys@outlook.com>"]
 edition = "2021"
+rust-version = "1.70.0"
 license = "Apache-2.0"
 description = "Verify hashes stored in apache's htpasswd file"
 repository = "https://github.com/aQaTL/htpasswd-verify"
@@ -14,8 +15,8 @@ keywords = ["apache", "password", "htpasswd"]
 members = [ "bin" ]
 
 [dependencies]
-base64 = "0.21"
-bcrypt = "0.15"
+base64 = "0.22"
+bcrypt = "0.17"
 md-5 = "0.10"
 pwhash = "1"
 sha1 = "0.10"
