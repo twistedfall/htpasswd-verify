@@ -90,8 +90,7 @@ impl<'a> Htpasswd<'a> {
 
 	pub fn check<U: AsRef<str>, P: AsRef<str>>(&self, username: U, password: P) -> bool {
 		self.0
-			.get(username.as_ref())
-			.map_or(false, |hash| hash.check(password))
+			.get(username.as_ref()).is_some_and(|hash| hash.check(password))
 	}
 
 	/// Returns true if the specified username is loaded into this [Htpasswd] instance, false otherwise
@@ -200,28 +199,28 @@ crypt_test:bGVh02xkuGli2";
 	#[test]
 	fn unix_crypt_verify_htpasswd() {
 		let htpasswd = Htpasswd::from(DATA);
-		assert_eq!(htpasswd.check("crypt_test", "password"), true);
+		assert!(htpasswd.check("crypt_test", "password"));
 	}
 
 	#[test]
 	fn sha1_verify_htpasswd() {
 		let htpasswd = Htpasswd::from(DATA);
-		assert_eq!(htpasswd.check("sha1_test", "password"), true);
+		assert!(htpasswd.check("sha1_test", "password"));
 	}
 
 	#[test]
 	fn bcrypt_verify_htpasswd() {
 		let htpasswd = Htpasswd::from(DATA);
-		assert_eq!(htpasswd.check("bcrypt_test", "password"), true);
+		assert!(htpasswd.check("bcrypt_test", "password"));
 	}
 
 	#[test]
 	fn md5_verify_htpasswd() {
 		let htpasswd = Htpasswd::from(DATA);
-		assert_eq!(htpasswd.check("user", "password"), true);
-		assert_eq!(htpasswd.check("user", "passwort"), false);
-		assert_eq!(htpasswd.check("user2", "zaq1@WSX"), true);
-		assert_eq!(htpasswd.check("user2", "ZAQ1@WSX"), false);
+		assert!(htpasswd.check("user", "password"));
+		assert!(!htpasswd.check("user", "passwort"));
+		assert!(htpasswd.check("user2", "zaq1@WSX"));
+		assert!(!htpasswd.check("user2", "ZAQ1@WSX"));
 	}
 
 	#[test]
@@ -245,6 +244,6 @@ crypt_test:bGVh02xkuGli2";
 	#[test]
 	fn user_not_found() {
 		let htpasswd = Htpasswd::new_borrowed(DATA);
-		assert_eq!(htpasswd.check("user_does_not_exist", "password"), false);
+		assert!(!htpasswd.check("user_does_not_exist", "password"));
 	}
 }

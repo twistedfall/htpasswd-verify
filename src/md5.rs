@@ -91,7 +91,7 @@ pub fn md5_apr1_encode(pw: &str, salt: &str) -> String {
 	let mut i = pw.len();
 	while i != 0 {
 		if i & 1 != 0 {
-			ctx.update(&[0]);
+			ctx.update([0]);
 		} else {
 			ctx.update(&pw[..1]);
 		}
@@ -104,7 +104,7 @@ pub fn md5_apr1_encode(pw: &str, salt: &str) -> String {
 		if i & 1 != 0 {
 			ctx1.update(pw);
 		} else {
-			ctx1.update(&digest);
+			ctx1.update(digest);
 		}
 		if i % 3 != 0 {
 			ctx1.update(sp);
@@ -115,7 +115,7 @@ pub fn md5_apr1_encode(pw: &str, salt: &str) -> String {
 		}
 
 		if i & 1 != 0 {
-			ctx1.update(&digest);
+			ctx1.update(digest);
 		} else {
 			ctx1.update(pw);
 		}
